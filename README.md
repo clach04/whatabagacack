@@ -31,4 +31,5 @@ So far:
 * https://github.com/search?q=repo%3Awallabag%2Fwallabag%20%40route&type=code
 * https://app.wallabag.it/api/doc
 * https://github.com/wallabag/doc/blob/master/en/developer/api/methods.md **old** still useful and in easy to read form
+* https://github.com/wallabag/doc/blob/master/en/developer/api/oauth.md
 * https://github.com/Strubbl/wallabago jas a nice short list of API endpoints
