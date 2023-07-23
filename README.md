@@ -25,3 +25,9 @@ So far:
   * Zero authentication support, server accepts any client without any auth check
   * Handles enough for `wallabag list` to work
   * Handles enough for `wallabag export --format epub ID_HERE` to work
+
+## resources
+
+* https://github.com/search?q=repo%3Awallabag%2Fwallabag%20%40route&type=code
+* https://app.wallabag.it/api/doc
+* 
