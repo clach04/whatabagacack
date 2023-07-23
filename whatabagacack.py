@@ -179,12 +179,14 @@ def wallabag_rest_api_wsgi(environ, start_response):
         # Returns a dictionary in which the values are lists
         get_dict = cgi.parse_qs(environ['QUERY_STRING'])  # FIXME not needed here, defer to later when GET is needed (useless OP when POST/PUT used)
 
-        if path_info and path_info.startswith('/api/v1/info'):  ## TODO FIXME version
+        if path_info and path_info.startswith('/api/v1/info'):  ## TODO FIXME version and info
             # http://shaarli.github.io/api-documentation/#links-instance-information-get
             # python -m shaarli_client.main  get-info
             server = environ['HTTP_HOST'] or (environ['SERVER_NAME'] + ':' + environ['SERVER_PORT'])
             fake_info_str = '{}'  # DEBUG
-        elif path_info and path_info.startswith('/oauth/v2/token'):
+        elif path_info and path_info == '/api/version':  # NOTE this is deprecated BUT KoReader Wallabag plugin uses this
+            fake_info_str = '"2.6.1"'  # TODO make this configurable
+        elif path_info and path_info.startswith('/oauth/v2/token'):  # wallabag-client uses this, KoReader sends a POST
             # FIXME dict to json rather than string
             fake_info_str = '''
             {
@@ -265,12 +267,20 @@ def wallabag_rest_api_wsgi(environ, start_response):
         link_payload_dict = json.loads(request_body)
         print('%r with payload %r' % (request_method, link_payload_dict))
 
-        if path_info and path_info.startswith('/api/v1/links/'):
-            fake_info_str = '{}'  # DEBUG
+        if path_info and path_info.startswith('/oauth/v2/token'):  # KoReader sends a POST -- TODO remove dupe code
+            # FIXME dict to json rather than string
+            fake_info_str = '''
+            {
+                "access_token":"ACCESS_TOKEN_GOES_HERE",
+                "expires_in":3600,
+                "token_type":"bearer",
+                "scope":null,
+                "refresh_token":"REFRESH_TOKEN_GOES_HERE"
+            }'''  # fake token, claim it expires in 1 hour.. but we won't check...
             #status = '201 OK'
         else:
             # Not supported, dump out information about the request
-            tmp_result = debug_dumper(environ, start_response, request_body=request_body, get_dict=get_dict)
+            tmp_result = debug_dumper(environ, start_response, request_body=request_body, get_dict=None)
             if tmp_result:
                 return tmp_result
             else:
