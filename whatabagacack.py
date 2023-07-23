@@ -169,13 +169,25 @@ def wallabag_rest_api_wsgi(environ, start_response):
     path_info = environ['PATH_INFO']
     request_method = environ['REQUEST_METHOD']
     # from https://wsgi.readthedocs.io/en/latest/definitions.html
+    print('debug ' + path_info)
     print('debug ' + environ['SERVER_PROTOCOL'])
     print('debug ' + environ['HTTP_HOST'])
     print('debug ' + environ['SERVER_NAME'])
     print('debug ' + environ['SERVER_PORT'])
     print('debug ' + environ['SCRIPT_NAME'])
 
-    if 'GET' == request_method:
+    if path_info and path_info.startswith('/oauth/v2/token'):
+        # don't get if GET, POST, etc.
+        # wallabag-client uses GET, KoReader sends a POST
+        fake_auth_token = {
+            "access_token": "ACCESS_TOKEN_GOES_HERE",
+            "expires_in": 3600,  # fake token, claim it expires in 1 hour.. but we won't check...
+            "token_type": "bearer",
+            "scope": None,
+            "refresh_token": "REFRESH_TOKEN_GOES_HERE"
+        }
+        fake_info_str = json.dumps(fake_auth_token)
+    elif 'GET' == request_method:
         # Returns a dictionary in which the values are lists
         get_dict = cgi.parse_qs(environ['QUERY_STRING'])  # FIXME not needed here, defer to later when GET is needed (useless OP when POST/PUT used)
 
@@ -186,17 +198,6 @@ def wallabag_rest_api_wsgi(environ, start_response):
             fake_info_str = '{}'  # DEBUG
         elif path_info and path_info == '/api/version':  # NOTE this is deprecated BUT KoReader Wallabag plugin uses this
             fake_info_str = '"2.6.1"'  # TODO make this configurable
-        elif path_info and path_info.startswith('/oauth/v2/token'):  # wallabag-client uses this, KoReader sends a POST
-            # FIXME dict to json rather than string
-            fake_info_str = '''
-            {
-                "access_token":"ACCESS_TOKEN_GOES_HERE",
-                "expires_in":3600,
-                "token_type":"bearer",
-                "scope":null,
-                "refresh_token":"REFRESH_TOKEN_GOES_HERE"
-            }'''  # fake token, claim it expires in 1 hour.. but we won't check...
-
         #elif path_info and path_info.startswith('/api/entries'):
         elif path_info and path_info == '/api/entries':
             #import pdb ; pdb.set_trace()  # DEBUG
@@ -267,16 +268,8 @@ def wallabag_rest_api_wsgi(environ, start_response):
         link_payload_dict = json.loads(request_body)
         print('%r with payload %r' % (request_method, link_payload_dict))
 
-        if path_info and path_info.startswith('/oauth/v2/token'):  # KoReader sends a POST -- TODO remove dupe code
-            # FIXME dict to json rather than string
-            fake_info_str = '''
-            {
-                "access_token":"ACCESS_TOKEN_GOES_HERE",
-                "expires_in":3600,
-                "token_type":"bearer",
-                "scope":null,
-                "refresh_token":"REFRESH_TOKEN_GOES_HERE"
-            }'''  # fake token, claim it expires in 1 hour.. but we won't check...
+        if path_info and path_info.startswith('/debugdebug'):
+            fake_info_str = '{}'
             #status = '201 OK'
         else:
             # Not supported, dump out information about the request
