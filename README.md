@@ -12,7 +12,7 @@ What a 👜 of 💩.
 Remotely similar to https://github.com/clach04/fake-shaarli-server
 make something looking like something else, a bridge/gateway/proxy.
 
-Aim to support a subset of the REST API used by:
+Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/doc/) used by:
 
   * https://github.com/artur-shaik/wallabag-client
       * `python -m pip install wallabag-client`
