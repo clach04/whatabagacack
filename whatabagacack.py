@@ -204,12 +204,14 @@ def wallabag_rest_api_wsgi(environ, start_response):
         elif path_info and path_info == '/api/version':  # NOTE this is deprecated BUT KoReader Wallabag plugin uses this
             fake_info_str = '"%s"' % WALLABAG_VERSION_STR
         #elif path_info and path_info.startswith('/api/entries'):
-        elif path_info and path_info == '/api/entries':
+        elif path_info and (path_info == '/api/entries' or path_info == '/api/entries.json'):  # NOTE .json is not documented (maybe old v1 API) and is used by KoReader
             #import pdb ; pdb.set_trace()  # DEBUG
             # only intend to support wallabag-client python app from pypi and KoReader
             # expecting QUERY_STRING dict {'perPage': ['46'], 'detail': ['metadata']}
             # FIXME not yet seen paging api request....
             #if environ['QUERY_STRING'] != 'perPage=46&detail=metadata':  # {'perPage': ['46'], 'detail': ['metadata']}:
+            #  'archive=0&page=1&perPage=30'  --  {'perPage': ['30'], 'archive': ['0'], 'page': ['1']}
+            """
             if get_dict == {'perPage': [get_dict.get('get_dict')], 'detail': ['metadata']}:
                 # Not supported / implemented, dump out information about the request
                 tmp_result = debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)
@@ -217,27 +219,32 @@ def wallabag_rest_api_wsgi(environ, start_response):
                     return tmp_result
                 else:
                     fake_info_str = tmp_result
-            else:
-                # NOTE bare minimum so wallabag-client from pypi will run with "list"
-                # TODO 1 - use dict and dump to json (rather than raw string as it is now)
-                # TODO 2 - pages of results
-                fake_info_str = """
-    {
-        "_embedded": {
-            "items": [
-                {
-                    "id": 1, 
-                    "tags": [], 
-                    "url": "http://some.domain.com/some/path.html", 
-                    "title": "Some Title",
-                    "content": null,
-                    "is_archived": 0,
-                    "is_starred": 0
+            """
+            # NOTE bare minimum so wallabag-client from pypi will run with "list"
+            # TODO 1 - use dict and dump to json (rather than raw string as it is now)
+            # TODO 2 - pages of results
+            """args to handle:
+                'archive':
+                'detail': 'metadata' / 'full' - likely never support full?
+                'page':
+                'perPage':
+            """
+            wallabag_articles = {
+                "_embedded": {
+                    "items": [
+                        {
+                            "id": 1, 
+                            "tags": [], 
+                            "url": "http://some.domain.com/some/path.html", 
+                            "title": "Some Title",
+                            "content": None,
+                            "is_archived": 0,
+                            "is_starred": 0
+                        }
+                    ]
                 }
-            ]
-        }
-    }
-"""
+            }
+            fake_info_str = json.dumps(wallabag_articles)
         elif path_info and path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
             # epub dowbload
             # TODO need id
