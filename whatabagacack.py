@@ -248,7 +248,13 @@ def wallabag_rest_api_wsgi(environ, start_response):
         elif path_info and path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
             # epub dowbload
             # TODO need id
-            result = b'epub goes here'
+            epub_filename = os.environ.get('FAKE_EPUB_FILENAME')
+            if epub_filename:
+                f = open(epub_filename, 'rb')
+                result = f.read()
+                f.close()
+            else:
+                result = b'epub goes here'
             title = 'title_goes_here'
             headers = [
                 #('Content-type', 'application/epub+zip')
