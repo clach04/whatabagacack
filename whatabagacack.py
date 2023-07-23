@@ -127,6 +127,7 @@ def determine_local_ipaddr():
 
 
 def debug_dumper(environ, start_response, request_body=None, get_dict=None):
+    print('### Debug dumper')
     #print(environ)
     #pprint(environ)
     print('PATH_INFO %r' % environ['PATH_INFO'])
