@@ -11,3 +11,16 @@ What a 👜 of 💩.
 
 Remotely similar to https://github.com/clach04/fake-shaarli-server
 make something looking like something else, a bridge/gateway/proxy.
+
+Aim to support a subset of the REST API used by:
+
+  * https://github.com/artur-shaik/wallabag-client
+      * `python -m pip install wallabag-client`
+  * https://github.com/koreader/koreader
+      * https://github.com/koreader/koreader/wiki/Wallabag
+      * https://github.com/koreader/koreader/tree/master/plugins/wallabag.koplugin
+
+So far:
+
+  * Zero authentication support, server accepts any client without any auth check
+  * Handles enough for `wallabag list` to work
