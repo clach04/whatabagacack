@@ -30,4 +30,4 @@ So far:
 
 * https://github.com/search?q=repo%3Awallabag%2Fwallabag%20%40route&type=code
 * https://app.wallabag.it/api/doc
-* 
+* https://github.com/Strubbl/wallabago jas a nice short list of API endpoints
