@@ -24,3 +24,4 @@ So far:
 
   * Zero authentication support, server accepts any client without any auth check
   * Handles enough for `wallabag list` to work
+  * Handles enough for `wallabag export --format epub ID_HERE` to work

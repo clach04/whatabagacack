@@ -195,7 +195,8 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 "refresh_token":"REFRESH_TOKEN_GOES_HERE"
             }'''  # fake token, claim it expires in 1 hour.. but we won't check...
 
-        elif path_info and path_info.startswith('/api/entries'):
+        #elif path_info and path_info.startswith('/api/entries'):
+        elif path_info and path_info == '/api/entries':
             #import pdb ; pdb.set_trace()  # DEBUG
             # only intend to support wallabag-client python app from pypi and KoReader
             # expecting QUERY_STRING dict {'perPage': ['46'], 'detail': ['metadata']}
@@ -229,6 +230,21 @@ def wallabag_rest_api_wsgi(environ, start_response):
         }
     }
 """
+        elif path_info and path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
+            # epub dowbload
+            # TODO need id
+            result = b'epub goes here'
+            title = 'title_goes_here'
+            headers = [
+                #('Content-type', 'application/epub+zip')
+                ('content-type', 'application/epub+zip'),
+                ('content-description', 'File Transfer'),
+                ('content-disposition', 'attachment; filename="%s.epub"' % title),  # FIXME escape filename
+                ('content-transfer-encoding', 'binary'),
+                ('cache-control', 'no-cache, private')
+            ]
+            start_response(status, headers)
+            return result
         else:
             # Not supported / implemented, dump out information about the request
             tmp_result = debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)
