@@ -266,10 +266,17 @@ def wallabag_rest_api_wsgi(environ, start_response):
             fake_info_str = json.dumps(wallabag_articles)
         elif path_info and path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
             # epub download
-            #epub_filename = wallabag_articles['_embedded'][items][id]['epub']  # TODO need id
-            #title = wallabag_articles['_embedded'][items][id]['wallabag_entry']['title']  # TODO need id
-            title = 'title_goes_here'
-            epub_filename = OVERRIDE_EPUB_FILENAME
+            # Assume have string like /api/entries/X/export.epub - where X is integer, perform little to no/zero santity/validity checks
+            entry_number = path_info.split('/')[3]  # again, no error checking, don't even check if it is an integer
+            #print('entry_number %r entry_number' % entry_number)
+            title = entries_metadata[entry_number]['wallabag_entry']['title']
+            #print('title %r' % title)
+            title = title.encode('utf-8')  # Python 2.x hack for now to avoid mix of unicode and str/bytes in headers
+            #print('title %r' % title)
+            epub_filename = entries_metadata[entry_number]['epub']
+            print('epub_filename %r' % epub_filename)
+            if OVERRIDE_EPUB_FILENAME:
+                epub_filename = OVERRIDE_EPUB_FILENAME
             if epub_filename:
                 f = open(epub_filename, 'rb')
                 result = f.read()
@@ -284,6 +291,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 ('content-transfer-encoding', 'binary'),
                 ('cache-control', 'no-cache, private')
             ]
+            #print('headers %r' % headers)
             start_response(status, headers)
             return result
         else:
