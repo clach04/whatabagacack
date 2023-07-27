@@ -25,6 +25,7 @@ So far:
   * Zero authentication support, server accepts any client without any auth check
   * Handles enough for `wallabag list` to work
   * Handles enough for `wallabag export --format epub ID_HERE` to work
+  * Handles enough for KoReader Wallabag plugin to list and then download epub entries
 
 ## resources
 
@@ -32,4 +33,9 @@ So far:
 * https://app.wallabag.it/api/doc
 * https://github.com/wallabag/doc/blob/master/en/developer/api/methods.md **old** still useful and in easy to read form
 * https://github.com/wallabag/doc/blob/master/en/developer/api/oauth.md
-* https://github.com/Strubbl/wallabago jas a nice short list of API endpoints
+* https://github.com/Strubbl/wallabago as a nice short list of API endpoints
+
+## What is this good for?
+
+  * For debugging wallabag clients, e.g. KoReader
+  * for replacing the Wallabag epub/page-scraper with an alternative one
