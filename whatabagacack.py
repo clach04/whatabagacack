@@ -156,7 +156,32 @@ def debug_dumper(environ, start_response, request_body=None, get_dict=None):
     fake_info_str = ''
     return fake_info_str
 
-WALLABAG_VERSION_STR = "2.6.1"   # TODO make this configurable
+
+WALLABAG_VERSION_STR = "2.6.1"  # TODO make this configurable
+entries_config_filename = os.environ.get('WEB_SITE_METADATA_FILENAME', 'entries.json')  # TODO make this configurable
+OVERRIDE_EPUB_FILENAME = os.environ.get('OVERRIDE_EPUB_FILENAME')  # i.e. override what ever is in config
+
+if os.path.exists(entries_config_filename):
+    f = open(entries_config_filename, 'rb')
+    entries_metadata = json.loads(f.read())
+    f.close()
+else:
+    print('default entries')
+    entries_metadata = {
+        "1": {
+            "wallabag_entry": {
+                "id": 1,
+                "tags": [],
+                "url": "http://some.domain.com/some/path.html",
+                "title": "Some Title",
+                "content": None,
+                "is_archived": 0,
+                "is_starred": 0
+            },
+            "epub": "some_title.epub"
+        }
+    }
+
 
 def wallabag_rest_api_wsgi(environ, start_response):
     """Simple WSGI application that implements bare minimum of
@@ -232,35 +257,30 @@ def wallabag_rest_api_wsgi(environ, start_response):
             wallabag_articles = {
                 "_embedded": {
                     "items": [
-                        {
-                            "id": 1, 
-                            "tags": [], 
-                            "url": "http://some.domain.com/some/path.html", 
-                            "title": "Some Title",
-                            "content": None,
-                            "is_archived": 0,
-                            "is_starred": 0
-                        }
                     ]
                 }
             }
+            for entry in entries_metadata:
+                wallabag_articles['_embedded']['items'].append(entries_metadata[entry]['wallabag_entry'])
+            #print(json.dumps(wallabag_articles, indent=4))  # DEBUG
             fake_info_str = json.dumps(wallabag_articles)
         elif path_info and path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
-            # epub dowbload
-            # TODO need id
-            epub_filename = os.environ.get('FAKE_EPUB_FILENAME')
+            # epub download
+            #epub_filename = wallabag_articles['_embedded'][items][id]['epub']  # TODO need id
+            #title = wallabag_articles['_embedded'][items][id]['wallabag_entry']['title']  # TODO need id
+            title = 'title_goes_here'
+            epub_filename = OVERRIDE_EPUB_FILENAME
             if epub_filename:
                 f = open(epub_filename, 'rb')
                 result = f.read()
                 f.close()
             else:
                 result = b'epub goes here'
-            title = 'title_goes_here'
             headers = [
                 #('Content-type', 'application/epub+zip')
                 ('content-type', 'application/epub+zip'),
                 ('content-description', 'File Transfer'),
-                ('content-disposition', 'attachment; filename="%s.epub"' % title),  # FIXME escape filename
+                ('content-disposition', 'attachment; filename="%s.epub"' % title),  # FIXME escape filename.. or just use the epub filename
                 ('content-transfer-encoding', 'binary'),
                 ('cache-control', 'no-cache, private')
             ]
