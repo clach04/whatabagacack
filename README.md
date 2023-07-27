@@ -24,8 +24,8 @@ So far:
 
   * Zero authentication support, server accepts any client without any auth check
   * Handles enough for `wallabag list` to work
-  * Handles enough for `wallabag export --format epub ID_HERE` to work
-  * Handles enough for KoReader Wallabag plugin to list and then download epub entries
+  * Handles enough for `wallabag export --format epub ID_HERE` to work - BUT doesn't actually deliver the correct epub, has place holder code to return something
+  * Handles enough for KoReader Wallabag plugin to list and then download epub entries (see pub limitaton above)
 
 ## resources
 
