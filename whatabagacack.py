@@ -2,7 +2,7 @@
 # -*- coding: us-ascii -*-
 # vim:ts=4:sw=4:softtabstop=4:smarttab:expandtab
 #
-# fake-shaarli-server.py - Fake out Shaarli REST API
+# whatabagacack.py - Fake out Wallabag 2.x REST API
 # Copyright (C) 2022  Chris Clark
 """WIP - aim is to provide just enough API support to allow wallabag-client and KoReader to run
 

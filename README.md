@@ -1,5 +1,7 @@
 # whatabagacack
 
+Home page https://github.com/clach04/whatabagacack
+
 If you stumbled on this project in relation to Wallabag, don't use this!
 Use Wallabag instead. Or perhaps:
 
