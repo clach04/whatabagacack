@@ -55,7 +55,7 @@ So far:
     https://en.wikipedia.org/wiki/Chess_piece
     https://en.wikipedia.org/wiki/Chess_symbols_in_Unicode
 
-1. NOTE - the later 2 cause problems for pypub3 - https://github.com/imgurbot12/pypub (which is why pypub3 is note used).
+1. NOTE - the later 2 cause problems for pypub3 - https://github.com/imgurbot12/pypub (which is why pypub3 is **not** used).
 2. NOTE - pypub as of 2023-07-30 can't handle Wikipedia (style) href links correctly.
 
 ## What is this good for?
