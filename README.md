@@ -19,6 +19,7 @@ Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/d
   * https://github.com/koreader/koreader
       * https://github.com/koreader/koreader/wiki/Wallabag
       * https://github.com/koreader/koreader/tree/master/plugins/wallabag.koplugin
+      * https://github.com/clach04/wallabag2.koplugin
 
 So far:
 
