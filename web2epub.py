@@ -22,6 +22,8 @@ import sys
 import w2d  # https://github.com/clach04/w2d
 
 
+#w2d.log.setLevel(logging.DEBUG)
+
 def main(argv=None):
     if argv is None:
         argv = sys.argv

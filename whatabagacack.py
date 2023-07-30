@@ -26,6 +26,7 @@ import mimetypes
 from pprint import pprint
 
 import socket
+import sqlite3
 import struct
 import sys
 from wsgiref.simple_server import make_server
@@ -160,27 +161,33 @@ def debug_dumper(environ, start_response, request_body=None, get_dict=None):
 WALLABAG_VERSION_STR = "2.6.1"  # TODO make this configurable
 entries_config_filename = os.environ.get('WEB_SITE_METADATA_FILENAME', 'entries.json')  # TODO make this configurable
 OVERRIDE_EPUB_FILENAME = os.environ.get('OVERRIDE_EPUB_FILENAME')  # i.e. override what ever is in config
+database_details = os.environ.get('WEB_SITE_DATABASE', 'web2epub.sqlite3')
+epub_directory = os.environ.get('WEB_EPUB_DIRECTORY', 'web2epub.sqlite3')
+use_database = False
+use_database = True
+# FIXME open and check has table
 
-if os.path.exists(entries_config_filename):
-    f = open(entries_config_filename, 'rb')
-    entries_metadata = json.loads(f.read())
-    f.close()
-else:
-    print('default entries')
-    entries_metadata = {
-        "1": {
-            "wallabag_entry": {
-                "id": 1,
-                "tags": [],
-                "url": "http://some.domain.com/some/path.html",
-                "title": "Some Title",
-                "content": None,
-                "is_archived": 0,
-                "is_starred": 0
-            },
-            "epub": "some_title.epub"
+if not use_database:
+    if os.path.exists(entries_config_filename):
+        f = open(entries_config_filename, 'rb')
+        entries_metadata = json.loads(f.read())
+        f.close()
+    else:
+        print('default entries')
+        entries_metadata = {
+            "1": {
+                "wallabag_entry": {
+                    "id": 1,
+                    "tags": [],
+                    "url": "http://some.domain.com/some/path.html",
+                    "title": "Some Title",
+                    "content": None,
+                    "is_archived": 0,
+                    "is_starred": 0
+                },
+                "epub": "some_title.epub"
+            }
         }
-    }
 
 
 def wallabag_rest_api_wsgi(environ, start_response):
@@ -260,8 +267,27 @@ def wallabag_rest_api_wsgi(environ, start_response):
                     ]
                 }
             }
-            for entry in entries_metadata:
-                wallabag_articles['_embedded']['items'].append(entries_metadata[entry]['wallabag_entry'])
+
+            if use_database:
+                # connect each and every time?
+                # TODO close?
+                log.debug('Connecting to database %r', database_details)
+                db = sqlite3.connect(database_details)
+                c = db.cursor()
+
+            if not use_database:
+                for entry in entries_metadata:
+                    wallabag_articles['_embedded']['items'].append(entries_metadata[entry]['wallabag_entry'])
+            else:
+                #bind_params = (url,)
+                #c.execute('SELECT rowid, wallabag_entry FROM entries WHERE url = ?', bind_params)
+                c.execute('SELECT rowid, wallabag_entry FROM entries')  # TODO
+                row = c.fetchone()
+                while row:
+                    rowid, wallabag_entry = row
+                    wallabag_articles['_embedded']['items'].append(json.loads(wallabag_entry))
+                    row = c.fetchone()
+
             #print(json.dumps(wallabag_articles, indent=4))  # DEBUG
             fake_info_str = json.dumps(wallabag_articles)
         elif path_info and path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
@@ -269,14 +295,32 @@ def wallabag_rest_api_wsgi(environ, start_response):
             # Assume have string like /api/entries/X/export.epub - where X is integer, perform little to no/zero santity/validity checks
             entry_number = path_info.split('/')[3]  # again, no error checking, don't even check if it is an integer
             #print('entry_number %r entry_number' % entry_number)
-            title = entries_metadata[entry_number]['wallabag_entry']['title']
+            if not use_database:
+                title = entries_metadata[entry_number]['wallabag_entry']['title']
+                epub_filename = entries_metadata[entry_number]['epub']
+            else:
+                if use_database:
+                    # connect each and every time?
+                    # TODO close?
+                    log.debug('Connecting to database %r', database_details)
+                    db = sqlite3.connect(database_details)
+                    c = db.cursor()
+
+                bind_params = (entry_number,)
+                c.execute('SELECT wallabag_entry, epub FROM entries WHERE rowid  = ?', bind_params)
+                wallabag_entry_json, epub_filename = c.fetchone()
+                wallabag_entry = json.loads(wallabag_entry_json)
+                title = wallabag_entry['title']
+
             #print('title %r' % title)
             title = title.encode('utf-8')  # Python 2.x hack for now to avoid mix of unicode and str/bytes in headers
             #print('title %r' % title)
-            epub_filename = entries_metadata[entry_number]['epub']
             print('epub_filename %r' % epub_filename)
             if OVERRIDE_EPUB_FILENAME:
                 epub_filename = OVERRIDE_EPUB_FILENAME
+            else:
+                epub_filename = os.path.join(epub_directory, epub_filename)
+
             if epub_filename:
                 f = open(epub_filename, 'rb')
                 result = f.read()
