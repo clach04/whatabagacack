@@ -42,3 +42,24 @@ So far:
 
   * For debugging wallabag clients, e.g. KoReader
   * for replacing the Wallabag epub/page-scraper with an alternative one
+
+## Usage
+
+### Usage Server
+
+    python whatabagacack.py
+
+NOTE expects `entries.json` to exist and be in correct format.
+Override file name with operating system environment variable `WEB_SITE_METADATA_FILENAME` to pathname of json file.
+
+DEBUG note, set operating system environment variable `OVERRIDE_EPUB_FILENAME` to full pathname to an epub to always return that one file.
+
+
+### Usage Dumb Scraper
+
+    python web2epub.py [list of urls]
+
+Example:
+
+    python web2epub.py https://en.wikipedia.org/wiki/EPUB
+    # NOTE requires manually copy/pasting json into entries.json (or some other name)
