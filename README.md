@@ -38,6 +38,26 @@ So far:
 * https://github.com/wallabag/doc/blob/master/en/developer/api/oauth.md
 * https://github.com/Strubbl/wallabago as a nice short list of API endpoints
 
+### Test / Sample URLs
+
+    https://en.wikipedia.org/wiki/EPUB
+    https://en.wikipedia.org/wiki/Fb2
+    https://en.wikipedia.org/wiki/FBReader
+    https://en.wikipedia.org/wiki/Web_scrape
+    https://en.wikipedia.org/wiki/Archive.org
+    https://en.wikipedia.org/wiki/Swamp_wallaby
+    https://en.wikipedia.org/wiki/Laser_Chess
+    https://en.wikipedia.org/wiki/Lazer_Maze
+    https://en.wikipedia.org/wiki/Deflektor
+    https://en.wikipedia.org/wiki/Atomic_chess
+    https://en.wikipedia.org/wiki/Stratomic
+
+    https://en.wikipedia.org/wiki/Chess_piece
+    https://en.wikipedia.org/wiki/Chess_symbols_in_Unicode
+
+1. NOTE - the later 2 cause problems for pypub3 - https://github.com/imgurbot12/pypub (which is why pypub3 is note used).
+2. NOTE - pypub as of 2023-07-30 can't handle Wikipedia (style) href links correctly.
+
 ## What is this good for?
 
   * For debugging wallabag clients, e.g. KoReader
