@@ -3,7 +3,7 @@
 # vim:ts=4:sw=4:softtabstop=4:smarttab:expandtab
 #
 # whatabagacack.py - Fake out Wallabag 2.x REST API
-# Copyright (C) 2022  Chris Clark
+# Copyright (C) 2023 Chris Clark
 """WIP - aim is to provide just enough API support to allow wallabag-client and KoReader to run
 
   * https://github.com/artur-shaik/wallabag-client
