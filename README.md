@@ -32,11 +32,14 @@ make something looking like something else, a bridge/gateway/proxy.
 Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/doc/) used by:
 
   * https://github.com/artur-shaik/wallabag-client
+      * https://shaik.link/posts/wallabag-client/features/
       * `python -m pip install wallabag-client`
   * https://github.com/koreader/koreader
       * https://github.com/koreader/koreader/wiki/Wallabag
       * https://github.com/koreader/koreader/tree/master/plugins/wallabag.koplugin
       * https://github.com/clach04/wallabag2.koplugin
+          * https://github.com/koreader/koreader/issues/9151 - wallabag plugin show progress for downloading article
+          * https://github.com/koreader/koreader/issues/10738 - wallabag performance slower than it needs to be
 
 
 ## Status
