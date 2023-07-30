@@ -9,6 +9,21 @@ Use Wallabag instead. Or perhaps:
 
 Experimental (incomplete) Wallabag API Server that runs under Python 3 and 2.
 
+- [whatabagacack](#whatabagacack)
+  * [Overview](#overview)
+  * [Status](#status)
+  * [resources](#resources)
+    + [Test / Sample URLs](#test---sample-urls)
+  * [What is this good for?](#what-is-this-good-for-)
+  * [Usage](#usage)
+    + [Usage Server](#usage-server)
+    + [Usage Dumb Scraper](#usage-dumb-scraper)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
+## Overview
+
 What a 👜 of 💩.
 
 Remotely similar to https://github.com/clach04/fake-shaarli-server
@@ -23,12 +38,14 @@ Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/d
       * https://github.com/koreader/koreader/tree/master/plugins/wallabag.koplugin
       * https://github.com/clach04/wallabag2.koplugin
 
-So far:
+
+## Status
 
   * Zero authentication support, server accepts any client without any auth check
   * Handles enough for `wallabag list` to work
   * Handles enough for `wallabag export --format epub ID_HERE` to work - either file specified in json "model" or via override OVERRIDE_EPUB_FILENAME os env
   * Handles enough for KoReader Wallabag plugin to list and then download epub entries
+  * Can generate metadata with epubs (epub2) from a list of URLs
 
 ## resources
 
