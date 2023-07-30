@@ -34,11 +34,12 @@ def main(argv=None):
     all_meta_data = {}
     for id, url in enumerate(urls, 1):
         print((id, url))
-        # TODO title and filename should come out of processor - FIXME remove
+        """
         dumb_title = url.replace('https', '').replace('http', '').replace('ftp', '').replace(':', '').replace('//', '').replace('/', ' ')
         dumb_filename = dumb_title.replace(' ', '_') + '.epub'  # FIXME this won't match what w2d does
         print('\t%s' % dumb_title)
         print('\t%s' % dumb_filename)
+        """
 
         result_metadata = w2d.dump_url(url, output_format=w2d.FORMAT_EPUB)  # TODO more options (e.g. skip readability, etc.)
         title = result_metadata['title']
