@@ -261,11 +261,20 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 'page':
                 'perPage':
             """
+
+            this_page = int(get_dict.get('page', ['1'])[0])
+            perPage = int(get_dict.get('perPage', ['30'])[0])
+            print('perPage %r' % perPage)
+            # ignore detail - only return meta
+
             wallabag_articles = {
                 "_embedded": {
                     "items": [
                     ]
-                }
+                },
+                "limit": perPage,
+                "page": this_page,
+                "pages": 1,
             }
 
             if use_database:
@@ -274,14 +283,39 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 log.debug('Connecting to database %r', database_details)
                 db = sqlite3.connect(database_details)
                 c = db.cursor()
+                c.execute('SELECT count(rowid) FROM entries')  # TODO restrictions (and below)
+                row = c.fetchone()
+                total = row[0]  # total number of entries that match
+                wallabag_articles["total"] = total
+                wallabag_articles["pages"] = total // perPage
+                if total % perPage > 0:
+                    wallabag_articles["pages"] += 1
+                http_protocol = 'http'  # FIXME detect https?
+                #this_url_template = '%s://%s/api/entries?detail=metadata' % (http_protocol, environ['HTTP_HOST'])
+                this_url_template = '%sapi/entries?detail=metadata' % (http_protocol, environ['HTTP_REFERER'])
+                this_url_template += '&page=%d&perPage=%d'
+                wallabag_articles["_links"] = {
+                    "self": {
+                        "href": this_url_template % (this_page, perPage)
+                    },
+                    "first": {
+                        "href": this_url_template % (1, perPage)
+                    },
+                    "last": {
+                        "href": this_url_template % (wallabag_articles["pages"], perPage)
+                    }
+                }
+                if this_page < wallabag_articles["pages"]:
+                    wallabag_articles["_links"]["next"] = { "href": this_url_template % (this_page + 1, perPage) }
 
             if not use_database:
                 for entry in entries_metadata:
                     wallabag_articles['_embedded']['items'].append(entries_metadata[entry]['wallabag_entry'])
             else:
+                # TODO handle no hits/empty - skip more queries
                 #bind_params = (url,)
                 #c.execute('SELECT rowid, wallabag_entry FROM entries WHERE url = ?', bind_params)
-                c.execute('SELECT rowid, wallabag_entry FROM entries')  # TODO
+                c.execute('SELECT rowid, wallabag_entry FROM entries')  # TODO restrictions
                 row = c.fetchone()
                 while row:
                     rowid, wallabag_entry = row
