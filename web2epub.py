@@ -60,15 +60,18 @@ def main(argv=None):
     """rowid maps to id, the rest of the "top" map exactly to wallabag entry
     wallabag_entry is json and the entire wallabag entry
     epub is the epub filename
+
+    TODO Allow to be stored in database and seperate worker to perform scrape/epub-conversion?
+    whatbagacack should then exclude epub IS NULL and wallabag_entry IS NULL rows
     """
     c.execute('''
     CREATE TABLE IF NOT EXISTS entries (
         rowid INTEGER PRIMARY KEY ASC,
-        url TEXT UNIQUE,
-        is_archived INT,
+        url TEXT UNIQUE NOT NULL,
+        is_archived INT NOT NULL,  /* Wallabag is_archived metadata */
 
-        epub TEXT,
-        wallabag_entry TEXT
+        epub TEXT NULLABLE,  /* if NULL, not scraped? consider making UNIQUE It should be unique, but does this need to be enforced in the database (with index overhead)? */
+        wallabag_entry TEXT  /* if NULL, not scraped? */
         )
     ''')
 
@@ -90,11 +93,14 @@ def main(argv=None):
         rows = c.fetchall()
         print('rows %r' % rows)
         if rows:
-            print('Skipping already in db id %r, for url %r' % (id, url))  # FIXME logging.info
+            print('Skipping already in db id %r, for url %r' % (id, url))  # FIXME logging.info - also options for force (re-fresh, which would likely also need existing epub to be deleted)
             continue
 
+        bind_params = (url, 0)
+        c.execute('insert into entries (url, is_archived) values (?, ?)', bind_params)
+        id = c.lastrowid
 
-        result_metadata = w2d.dump_url(url, output_format=w2d.FORMAT_EPUB)  # TODO more options (e.g. skip readability, etc.)
+        result_metadata = w2d.dump_url(url, output_format=w2d.FORMAT_EPUB, filename_prefix='%d_' % id)  # TODO more options (e.g. skip readability, etc.)
         title = result_metadata['title']
         epub_filename = result_metadata['filename']
 
@@ -112,11 +118,8 @@ def main(argv=None):
         }
         #bind_params = (url, 0, json.dumps(entry_metadata), epub_filename)
         #c.execute('insert into entries (url, is_archived, wallabag_entry, epub) values (?, ?, ?, ?)', bind_params)
-        bind_params = (url, 0, epub_filename)
-        c.execute('insert into entries (url, is_archived, epub) values (?, ?, ?)', bind_params)
-        id = c.lastrowid
-        bind_params = (json.dumps(entry_metadata), id)
-        c.execute('UPDATE entries SET wallabag_entry = ? WHERE rowid = ?', bind_params)
+        bind_params = (epub_filename, json.dumps(entry_metadata), id)
+        c.execute('UPDATE entries SET epub = ?, wallabag_entry = ? WHERE rowid = ?', bind_params)
         entry_metadata['id'] = id
         all_meta_data[id] = {
             'wallabag_entry': entry_metadata,
