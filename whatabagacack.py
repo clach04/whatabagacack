@@ -290,9 +290,9 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 wallabag_articles["pages"] = total // perPage
                 if total % perPage > 0:
                     wallabag_articles["pages"] += 1
-                http_protocol = 'http'  # FIXME detect https?
+                #http_protocol = 'http'  # FIXME detect https?
                 #this_url_template = '%s://%s/api/entries?detail=metadata' % (http_protocol, environ['HTTP_HOST'])
-                this_url_template = '%sapi/entries?detail=metadata' % (http_protocol, environ['HTTP_REFERER'])
+                this_url_template = '%sapi/entries?detail=metadata' % (environ['HTTP_REFERER'], )
                 this_url_template += '&page=%d&perPage=%d'
                 wallabag_articles["_links"] = {
                     "self": {
