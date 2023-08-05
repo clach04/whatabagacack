@@ -378,7 +378,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
             ]
             #print('headers %r' % headers)
             start_response(status, headers)
-            return result
+            return [result]
         else:
             # Not supported / implemented, dump out information about the request
             tmp_result = debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)
