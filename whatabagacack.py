@@ -167,7 +167,7 @@ WALLABAG_VERSION_STR = "2.6.1"  # TODO make this configurable
 entries_config_filename = os.environ.get('WEB_SITE_METADATA_FILENAME', 'entries.json')  # TODO make this configurable
 OVERRIDE_EPUB_FILENAME = os.environ.get('OVERRIDE_EPUB_FILENAME')  # i.e. override what ever is in config
 database_details = os.environ.get('WEB_SITE_DATABASE', 'web2epub.sqlite3')
-epub_directory = os.environ.get('WEB_EPUB_DIRECTORY', 'web2epub.sqlite3')
+epub_directory = os.environ.get('WEB_EPUB_DIRECTORY', '.')
 use_database = False
 use_database = True
 # FIXME open and check has table
