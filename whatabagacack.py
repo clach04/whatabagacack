@@ -215,6 +215,10 @@ def wallabag_rest_api_wsgi(environ, start_response):
     print('debug ' + environ['SERVER_PORT'])
     print('debug ' + environ['SCRIPT_NAME'])
 
+    # environ['HTTP_REFERER'] may work and IF present includes protocol - does not work with Android KoReader client to Lubuntu py3 server
+    http_protocol = 'http'  # FIXME detect https?
+    server_adresss = environ.get('HTTP_REFERER') or '%s://%s/' % (http_protocol, environ.get('HTTP_HOST') or (environ['SERVER_NAME'] + ':' + environ['SERVER_PORT']))  # TODO add config option to set/override this (e.g. for reverse proxies)
+
     if path_info and path_info.startswith('/oauth/v2/token'):
         # don't get if GET, POST, etc.
         # wallabag-client uses GET, KoReader sends a POST
@@ -231,7 +235,6 @@ def wallabag_rest_api_wsgi(environ, start_response):
         get_dict = cgi.parse_qs(environ['QUERY_STRING'])  # FIXME not needed here, defer to later when GET is needed (useless OP when POST/PUT used)
 
         if path_info and path_info.startswith('/api/info'):
-            #server = environ['HTTP_HOST'] or (environ['SERVER_NAME'] + ':' + environ['SERVER_PORT'])
             wallabag_version_dict = {
                 "appname": "wallabag",
                 "version": WALLABAG_VERSION_STR,
@@ -296,9 +299,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 wallabag_articles["pages"] = total // perPage
                 if total % perPage > 0:
                     wallabag_articles["pages"] += 1
-                #http_protocol = 'http'  # FIXME detect https?
-                #this_url_template = '%s://%s/api/entries?detail=metadata' % (http_protocol, environ['HTTP_HOST'])
-                this_url_template = '%sapi/entries?detail=metadata' % (environ['HTTP_REFERER'], )  # this does not work under lunbunt py3 with koreader on android client - missing
+                this_url_template = '%sapi/entries?detail=metadata' % (server_adresss, )
                 this_url_template += '&page=%d&perPage=%d'
                 wallabag_articles["_links"] = {
                     "self": {
