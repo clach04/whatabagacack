@@ -144,6 +144,11 @@ def debug_dumper(environ, start_response, request_body=None, get_dict=None):
         if key.startswith('HTTP_'):  # TODO potentially startswith 'wsgi' as well
             # TODO remove leading 'HTTP_'?
             print('http header ' + key + ' = ' + repr(environ[key]))
+        else:
+            dump_all_headers = False
+            #dump_all_headers = True
+            if dump_all_headers:
+                print('header ' + key + ' = ' + repr(environ[key]))
 
     print('POST body %r' % request_body)
     if environ['CONTENT_TYPE'] == 'application/json' and json and request_body:
@@ -238,6 +243,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
         #elif path_info and path_info.startswith('/api/entries'):
         elif path_info and (path_info == '/api/entries' or path_info == '/api/entries.json'):  # NOTE .json is not documented (maybe old v1 API) and is used by KoReader
             #import pdb ; pdb.set_trace()  # DEBUG
+            #return debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)  # DEBUG
             # only intend to support wallabag-client python app from pypi and KoReader
             # expecting QUERY_STRING dict {'perPage': ['46'], 'detail': ['metadata']}
             # FIXME not yet seen paging api request....
@@ -292,7 +298,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
                     wallabag_articles["pages"] += 1
                 #http_protocol = 'http'  # FIXME detect https?
                 #this_url_template = '%s://%s/api/entries?detail=metadata' % (http_protocol, environ['HTTP_HOST'])
-                this_url_template = '%sapi/entries?detail=metadata' % (environ['HTTP_REFERER'], )
+                this_url_template = '%sapi/entries?detail=metadata' % (environ['HTTP_REFERER'], )  # this does not work under lunbunt py3 with koreader on android client - missing
                 this_url_template += '&page=%d&perPage=%d'
                 wallabag_articles["_links"] = {
                     "self": {
