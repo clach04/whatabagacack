@@ -322,7 +322,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 # TODO handle no hits/empty - skip more queries
                 #bind_params = (url,)
                 #c.execute('SELECT rowid, wallabag_entry FROM entries WHERE url = ?', bind_params)
-                c.execute('SELECT rowid, wallabag_entry FROM entries WHERE epub IS NULL ORDER BY rowid')  # TODO restrictions, like is_archived (convert to bool, then integer)...
+                c.execute('SELECT rowid, wallabag_entry FROM entries WHERE epub IS NOT NULL ORDER BY rowid')  # TODO restrictions, like is_archived (convert to bool, then integer)...
                 row = c.fetchone()
                 while row:
                     rowid, wallabag_entry = row
