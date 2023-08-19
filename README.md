@@ -98,7 +98,11 @@ Scrape and launch server
     mkdir archived_sites
     cd archived_sites
     python ../web2epub.py https://en.wikipedia.org/wiki/EPUB
-    python whatabagacack.py
+    python ../whatabagacack.py
+
+
+    ## demo read meta data
+    curl http://localhost:8000/api/entries
 
 
 ### Usage Server
