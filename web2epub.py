@@ -100,6 +100,7 @@ def main(argv=None):
         c.execute('insert into entries (url, is_archived) values (?, ?)', bind_params)
         id = c.lastrowid
 
+        # TODO call w2d.process_page() instead
         result_metadata = w2d.dump_url(url, output_format=w2d.FORMAT_EPUB, filename_prefix='%d_' % id)  # TODO more options (e.g. skip readability, etc.)
         title = result_metadata['title']
         epub_filename = result_metadata['filename']
