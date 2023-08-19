@@ -15,7 +15,6 @@ Uses WSGI, see http://docs.python.org/library/wsgiref.html
 Python 2 or Python 3
 """
 
-import cgi
 import os
 try:
     import json
@@ -29,6 +28,14 @@ import socket
 import sqlite3
 import struct
 import sys
+
+try:
+    # Py3
+    from urllib.parse import parse_qs
+except ImportError:
+    # Py2
+    from cgi import parse_qs
+
 from wsgiref.simple_server import make_server
 
 
@@ -232,7 +239,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
         fake_info_str = json.dumps(fake_auth_token)
     elif 'GET' == request_method:
         # Returns a dictionary in which the values are lists
-        get_dict = cgi.parse_qs(environ['QUERY_STRING'])  # FIXME not needed here, defer to later when GET is needed (useless OP when POST/PUT used)
+        get_dict = parse_qs(environ['QUERY_STRING'])  # FIXME not needed here, defer to later when GET is needed (useless OP when POST/PUT used)
 
         if path_info and path_info.startswith('/api/info'):
             wallabag_version_dict = {
