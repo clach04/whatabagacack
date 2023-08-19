@@ -85,6 +85,22 @@ Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/d
 
 ## Usage
 
+### Quick Start Server
+
+Also see:
+
+  * [Usage Dumb Scraper](#usage-dumb-scraper)
+  * [Usage Server](#usage-server)
+
+Scrape and launch server
+
+    python -m pip install -e git+https://github.com/clach04/w2d.git#egg=w2d
+    mkdir archived_sites
+    cd archived_sites
+    python ../web2epub.py https://en.wikipedia.org/wiki/EPUB
+    python whatabagacack.py
+
+
 ### Usage Server
 
     set WEB_SITE_DATABASE=C:\code\py\w2d\web2epub.sqlite3
