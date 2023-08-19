@@ -90,7 +90,7 @@ Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/d
     set WEB_SITE_DATABASE=C:\code\py\w2d\web2epub.sqlite3
     set WEB_EPUB_DIRECTORY=C:\code\py\w2d\
 
-    export  WEB_SITE_DATABASE=/code/py/w2d/web2epub.sqlite3
+    export WEB_SITE_DATABASE=/code/py/w2d/web2epub.sqlite3
     export WEB_EPUB_DIRECTORY=/code/py/w2d
 
     python whatabagacack.py
@@ -104,7 +104,7 @@ DEBUG note, set operating system environment variable `OVERRIDE_EPUB_FILENAME` t
 ### Usage Dumb Scraper
 
     set WEB_SITE_DATABASE=C:\code\py\w2d\web2epub.sqlite3
-    export  WEB_SITE_DATABASE=/code/py/w2d/web2epub.sqlite3
+    export WEB_SITE_DATABASE=/code/py/w2d/web2epub.sqlite3
 
     python web2epub.py [list of urls]
 
