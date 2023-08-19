@@ -8,6 +8,7 @@ Use Wallabag instead. Or perhaps:
   * https://github.com/LordEidi/wombag - Written in Go
 
 Experimental (incomplete) Wallabag API Server that runs under Python 3 and 2.
+Runs under Microsoft Windows and Linux (expected to run under Mac, but untested).
 
 - [whatabagacack](#whatabagacack)
   * [Overview](#overview)
@@ -92,9 +93,17 @@ Also see:
   * [Usage Dumb Scraper](#usage-dumb-scraper)
   * [Usage Server](#usage-server)
 
-Scrape and launch server
+
+Install bare minimum / recommend dependencies:
 
     python -m pip install -e git+https://github.com/clach04/w2d.git#egg=w2d
+    # manually install pandoc https://pandoc.org/installing.html
+    sudo apt-get install
+    # install / run Postlight (nee Mercury) Parser web API (locally) from https://github.com/HenryQW/mercury-parser-api
+    docker run -p 3000:3000 -d wangqiru/mercury-parser-api
+
+Scrape and launch server
+
     mkdir archived_sites
     cd archived_sites
     python ../web2epub.py https://en.wikipedia.org/wiki/EPUB
