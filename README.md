@@ -41,7 +41,15 @@ Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/d
       * https://github.com/clach04/wallabag2.koplugin
           * https://github.com/koreader/koreader/issues/9151 - wallabag plugin show progress for downloading article
           * https://github.com/koreader/koreader/issues/10738 - wallabag performance slower than it needs to be
-
+  * Stretch goals
+      * Javascript bookmarklet (clone) `javascript:(function(){var url=location.href||url;var wllbg=window.open('https://app.wallabag.it/bookmarklet?url=' + encodeURIComponent(url),'_blank');})();`
+      * [Android app](https://github.com/wallabag/android-app)
+          * https://f-droid.org/app/fr.gaulupeau.apps.InThePoche
+          * https://play.google.com/store/apps/details?id=fr.gaulupeau.apps.InThePoche
+      * [Browser extensions/plugin/addons](https://github.com/wallabag/wallabagger)
+          * https://addons.mozilla.org/firefox/addon/wallabagger/
+          * https://chrome.google.com/webstore/detail/wallabagger/gbmgphmejlcoihgedabhgjdkcahacjlj
+      * [Bookmarklet extension](https://addons.mozilla.org/en-US/firefox/addon/wallabaggerini/) https://github.com/Johennes/wallabaggerini
 
 ## Status
 
