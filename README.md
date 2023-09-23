@@ -10,7 +10,7 @@ Use Wallabag instead. Or perhaps:
 Experimental (incomplete) Wallabag API Server that runs under Python 3 and 2.
 Runs under Microsoft Windows and Linux (expected to run under Mac, but untested).
 
-- [whatabagacack](#whatabagacack)
+- [❓👜💩❗ What A Bag A Cack](#-------what-a-bag-a-cack)
   * [Overview](#overview)
   * [Status](#status)
   * [resources](#resources)
