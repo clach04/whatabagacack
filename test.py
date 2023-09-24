@@ -2,7 +2,18 @@
 # -*- coding: us-ascii -*-
 # vim:ts=4:sw=4:softtabstop=4:smarttab:expandtab
 #
+"""
 
+Sample Usage
+
+    set TMP_DB_NAME=test_archive_dir\test_db.sqlite3
+    del %TMP_DB_NAME%
+
+    python test.py
+    "C:\Program Files\SQLite ODBC Driver for Win64\sqlite3.exe" %TMP_DB_NAME% .dump
+    dir test_archive_dir
+
+"""
 
 # using w2d test server pages
 
@@ -23,7 +34,7 @@ def doit():
         - archive dir
         - parser - raw / postlight
         - format
-        - converter - W2D_EPUB_TOOL=pandoc
+        - converter - setting W2D_EPUB_TOOL=pandoc has no effect with w2d.process_page()
     """
     url_list_str = """
 http://localhost:8000/one.html
