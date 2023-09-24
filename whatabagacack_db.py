@@ -11,11 +11,14 @@ log.setLevel(level=logging.DEBUG)
 
 
 class UrlDb:
-    def __init__(self, database_name):
+    def __init__(self, database_name, autocommit=True):
         self.database_name = database_name
         self._db = None
+        self.autocommit = autocommit or False  # implemented in this class, not using/relying on database autocommit
 
     def _disconnect(self, commit=False):
+        """Ignores autocommit, assumes autocommit was issued previously
+        """
         db = self._db
         if db:
             if commit:
@@ -37,6 +40,8 @@ class UrlDb:
             wallabag_entry TEXT  /* if NULL, not scraped? */
             )
         ''')
+        if self.autocommit:
+            db.commit()
 
     def url_add(self, url):
         """Add to url into database
@@ -48,6 +53,8 @@ class UrlDb:
         bind_params = (url, 0)
         log.debug('bind_params %r', bind_params)
         c.execute('insert into entries (url, is_archived) values (?, ?)', bind_params)
+        if self.autocommit:
+            db.commit()
         return c.lastrowid
 
     def url_check(self, url):
@@ -58,6 +65,8 @@ class UrlDb:
         bind_params = (url,)
         c.execute('SELECT rowid FROM entries WHERE url = ?', bind_params)  # TODO COUNT(*) instead?
         rows = c.fetchall()
+        if self.autocommit:
+            db.commit()
         if rows:
             return True
         else:
