@@ -33,8 +33,8 @@ log.setLevel(level=logging.DEBUG)
 
 def scrape_and_save_one(c, rowid, url):
     """TODO doc environment variables that cause side effects
-        cache dir ? W2D_CACHE_DIR
-        output dir
+        cache dir ? W2D_CACHE_DIR, currently handled by caller, e.g. scrape_and_save()
+        output dir - current directory, also handled by caller
     """
     # TODO call w2d.process_page() instead
     #result_metadata = w2d.dump_url(url, output_format=w2d.FORMAT_EPUB, filename_prefix='%d_' % rowid)  # TODO more options (e.g. skip readability, etc.)
@@ -59,7 +59,7 @@ def scrape_and_save_one(c, rowid, url):
     c.execute('UPDATE entries SET epub = ?, wallabag_entry = ? WHERE rowid = ?', bind_params)
 
 def scrape_and_save(database_details):
-    w2d.safe_mkdir(w2d.cache_dir)  # TODO this could be better
+    w2d.safe_mkdir(w2d.cache_dir)  # i.e. W2D_CACHE_DIR - TODO this could be better
     url_db = whatabagacack_db.UrlDb(database_details)
 
     url_db._connect()
