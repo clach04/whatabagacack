@@ -347,6 +347,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
                 for entry in entries_metadata:
                     wallabag_articles['_embedded']['items'].append(entries_metadata[entry]['wallabag_entry'])
             else:
+                # FIXME paging options ignored
                 # TODO handle no hits/empty - skip more queries
                 #bind_params = (url,)
                 #c.execute('SELECT rowid, wallabag_entry FROM entries WHERE url = ?', bind_params)
