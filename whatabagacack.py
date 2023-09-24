@@ -39,6 +39,9 @@ except ImportError:
 from wsgiref.simple_server import make_server
 
 
+import whatabagacack_db
+
+
 version_tuple = (0, 0, 1)
 version = __version__ = '%d.%d.%d' % version_tuple
 __author__ = 'clach04'
@@ -245,7 +248,21 @@ def wallabag_rest_api_wsgi(environ, start_response):
             return debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)
         # TODO remove "if path_info and " checks below, no longer needed
 
-        if path_info.startswith('/api/info'):
+        if path_info.startswith('/bookmarklet'):
+            # not REST API, this is a bookmarklet for ease of use
+            # for example used by https://github.com/Johennes/wallabaggerini
+            url_db = whatabagacack_db.UrlDb(database_details)
+            try:
+                url = get_dict.get('url')[0]
+                if not url:
+                    return debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)  # TODO or error
+                url_db._connect()
+                row_id = url_db.url_add(url)
+                fake_info_str = str(row_id)
+                url_db._disconnect(commit=True)
+            finally:
+                url_db._disconnect()
+        elif path_info.startswith('/api/info'):
             wallabag_version_dict = {
                 "appname": "wallabag",
                 "version": WALLABAG_VERSION_STR,
