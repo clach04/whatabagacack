@@ -49,23 +49,28 @@ class UrlDb:
         """
         db = self._db
         c = db.cursor()
-        # TODO check first and abort
-        bind_params = (url, 0)
-        log.debug('bind_params %r', bind_params)
-        c.execute('insert into entries (url, is_archived) values (?, ?)', bind_params)
+        result = None
+        # check first and abort
+        if not self.url_check(url, autocommit=False):
+            bind_params = (url, 0)
+            log.debug('bind_params %r', bind_params)
+            c.execute('insert into entries (url, is_archived) values (?, ?)', bind_params)
+            result = c.lastrowid
         if self.autocommit:
             db.commit()
-        return c.lastrowid
+        return result
 
-    def url_check(self, url):
+    def url_check(self, url, autocommit=None):
         """Return True if url already in database
         """
+        if autocommit is None:
+            autocommit = self.autocommit
         db = self._db
         c = db.cursor()
         bind_params = (url,)
         c.execute('SELECT rowid FROM entries WHERE url = ?', bind_params)  # TODO COUNT(*) instead?
         rows = c.fetchall()
-        if self.autocommit:
+        if autocommit:
             db.commit()
         if rows:
             return True
