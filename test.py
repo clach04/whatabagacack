@@ -28,7 +28,10 @@ import whatabagacack_db
 import web2epub
 
 
-def doit():
+#w2d.log.setLevel(logging.DEBUG)
+web2epub.log.setLevel(logging.INFO)
+
+def doit(filename=None):
     """FIXME
         - cache dir
         - archive dir
@@ -36,7 +39,13 @@ def doit():
         - format
         - converter - setting W2D_EPUB_TOOL=pandoc has no effect with w2d.process_page()
     """
-    url_list_str = """
+    #import pdb ; pdb.set_trace()
+    if filename:
+        f = open(filename, 'r')
+        url_list_str = f.read()
+        f.close()
+    else:
+        url_list_str = """
 http://localhost:8000/one.html
 http://localhost:8000/two.html
 http://localhost:8000/sub_dir/three.html
@@ -54,6 +63,8 @@ http://localhost:8000/sub_dir/three.html
         line = line.strip()
         if not line:
             continue
+        if line.startswith('#'):  # comment
+            continue
         print('%s' % line)
         rowid = url_db.url_add(line)
     #import pdb ; pdb.set_trace()
@@ -68,7 +79,11 @@ def main(argv=None):
         argv = sys.argv
 
     print('Python %s on %s' % (sys.version, sys.platform))
-    doit()
+    try:
+        filename = argv[1]
+    except IndexError:
+        filename = None
+    doit(filename)
     return 0
 
 
