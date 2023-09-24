@@ -204,9 +204,7 @@ if not use_database:
 
 def wallabag_rest_api_wsgi(environ, start_response):
     """Simple WSGI application that implements bare minimum of
-    http://shaarli.github.io/api-documentation/ so that
-    https://github.com/dimtion/Shaarlier and
-    https://github.com/shaarli/python-shaarli-client completes
+    wallabag rest api so KoReader Plugin can pull down epub files
     """
     status = '200 OK'
     headers = [('Content-type', 'application/json')]
