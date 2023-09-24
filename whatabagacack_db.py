@@ -32,6 +32,7 @@ class UrlDb:
             else:
                 db.rollback()  # explictly, not really needed but here as just-in-case
             db.close()
+            self._db = None
 
     def _connect(self):
         self._db = db = sqlite3.connect(self.database_name)
@@ -59,12 +60,14 @@ class UrlDb:
             self._connect()
 
     def commit(self):
+        db = self._db
         if self._db:
             db.commit()
         else:
             raise NotImplmentedError('no database connection')
 
     def rollback(self):
+        db = self._db
         if self._db:
             db.rollback()
         else:
