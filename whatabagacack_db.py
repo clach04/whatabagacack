@@ -12,6 +12,8 @@ log.setLevel(level=logging.DEBUG)
 
 class UrlDb:
     def __init__(self, database_name, autocommit=True):
+        """autocommit is really  pseudo autocommit, and handled in the application NOT the database (driver)
+        """
         self.database_name = database_name
         self._db = None
         self.autocommit = autocommit or False  # implemented in this class, not using/relying on database autocommit
