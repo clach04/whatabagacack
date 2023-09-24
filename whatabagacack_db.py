@@ -38,8 +38,8 @@ class UrlDb:
             url TEXT UNIQUE NOT NULL,
             is_archived INT NOT NULL,  /* Wallabag is_archived metadata */
 
-            epub TEXT NULLABLE,  /* if NULL, not scraped? consider making UNIQUE It should be unique, but does this need to be enforced in the database (with index overhead)? */
-            wallabag_entry TEXT  /* if NULL, not scraped? */
+            epub TEXT NULLABLE,  /* epub filename, if NULL, not scraped. Consider making UNIQUE It should be unique, but does this need to be enforced in the database (with index overhead)? */
+            wallabag_entry TEXT  /* (bare minimum) wallabag json metadata to allow KoReader to work. If NULL, not scraped */
         )
         ''')
         if self.autocommit:
