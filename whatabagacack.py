@@ -258,7 +258,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
                     return debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)  # TODO or error
                 url_db._connect()
                 row_id = url_db.url_add(url)
-                fake_info_str = str(row_id)
+                fake_info_str = json.dumps(row_id)  # FIXME debug, there is no web interface so what to return?
                 url_db._disconnect(commit=True)
             finally:
                 url_db._disconnect()
