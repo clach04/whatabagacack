@@ -36,9 +36,14 @@ def scrape_and_save_one(c, rowid, url):
         cache dir ? W2D_CACHE_DIR, currently handled by caller, e.g. scrape_and_save()
         output dir - current directory, also handled by caller
     """
-    # TODO call w2d.process_page() instead
-    #result_metadata = w2d.dump_url(url, output_format=w2d.FORMAT_EPUB, filename_prefix='%d_' % rowid)  # TODO more options (e.g. skip readability, etc.)
-    result_metadata = w2d.process_page(url, output_format=w2d.FORMAT_HTML, extractor_function=w2d.extractor_raw, filename_prefix='%d_' % rowid)  # DEBUG
+    output_format = w2d.FORMAT_HTML
+    output_format = w2d.FORMAT_EPUB
+
+    extractor_function = w2d.extractor_raw
+
+    #epub_output_function = w2d.pandoc_epub_output_function
+    #result_metadata = w2d.process_page(url, output_format=output_format, extractor_function=extractor_function, filename_prefix='%d_' % rowid, epub_output_function=epub_output_function)
+    result_metadata = w2d.process_page(url, output_format=output_format, extractor_function=extractor_function, filename_prefix='%d_' % rowid)
 
     title = result_metadata['title']
     epub_filename = result_metadata['filename']
