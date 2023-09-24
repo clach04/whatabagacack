@@ -361,7 +361,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
             #print(json.dumps(wallabag_articles, indent=4))  # DEBUG
             fake_info_str = json.dumps(wallabag_articles)
         elif path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
-            # epub download
+            # Single epub download
             # Assume have string like /api/entries/X/export.epub - where X is integer, perform little to no/zero santity/validity checks
             entry_number = path_info.split('/')[3]  # again, no error checking, don't even check if it is an integer
             #print('entry_number %r entry_number' % entry_number)
