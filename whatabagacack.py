@@ -213,6 +213,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
     path_info = environ['PATH_INFO']
     request_method = environ['REQUEST_METHOD']
     # from https://wsgi.readthedocs.io/en/latest/definitions.html
+    print('debug request_method: ' + request_method)
     print('debug ' + path_info)
     print('debug ' + environ['SERVER_PROTOCOL'])
     print('debug ' + environ['HTTP_HOST'])
@@ -238,6 +239,11 @@ def wallabag_rest_api_wsgi(environ, start_response):
     elif 'GET' == request_method:
         # Returns a dictionary in which the values are lists
         get_dict = parse_qs(environ['QUERY_STRING'])  # FIXME not needed here, defer to later when GET is needed (useless OP when POST/PUT used)
+
+        if not path_info:
+            # unlikely to end up here, as / prefix expected
+            return debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)
+        # TODO remove "if path_info and " checks below, no longer needed
 
         if path_info and path_info.startswith('/api/info'):
             wallabag_version_dict = {
