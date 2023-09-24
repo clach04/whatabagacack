@@ -21,8 +21,78 @@ import sys
 
 import w2d  # https://github.com/clach04/w2d
 
+import whatabagacack_db
 
 #w2d.log.setLevel(logging.DEBUG)
+
+
+log = logging.getLogger(__name__)
+logging.basicConfig()
+log.setLevel(level=logging.DEBUG)
+
+
+def scrape_and_save_one(c, rowid, url):
+    """TODO doc environment variables that cause side effects
+        cache dir ? W2D_CACHE_DIR
+        output dir
+    """
+    # TODO call w2d.process_page() instead
+    #result_metadata = w2d.dump_url(url, output_format=w2d.FORMAT_EPUB, filename_prefix='%d_' % rowid)  # TODO more options (e.g. skip readability, etc.)
+    result_metadata = w2d.process_page(url, output_format=w2d.FORMAT_HTML, extractor_function=w2d.extractor_raw, filename_prefix='%d_' % rowid)  # DEBUG
+
+    title = result_metadata['title']
+    epub_filename = result_metadata['filename']
+
+    # Wallabag like (subset) meta data)
+    # Bare minimum to allow wallabag-client to work, also works for KoReader
+    # TODO more metadata
+    entry_metadata = {
+        "id": rowid,
+        "tags": [],
+        "url": url,
+        "title": title,
+        "content": None,
+        "is_archived": 0,
+        "is_starred": 0
+    }
+    bind_params = (epub_filename, json.dumps(entry_metadata), rowid)
+    c.execute('UPDATE entries SET epub = ?, wallabag_entry = ? WHERE rowid = ?', bind_params)
+
+def scrape_and_save(database_details):
+    w2d.safe_mkdir(w2d.cache_dir)  # TODO this could be better
+    url_db = whatabagacack_db.UrlDb(database_details)
+
+    url_db._connect()
+    c = url_db._db.cursor()
+    c_update = url_db._db.cursor()
+
+    c.execute('SELECT count(rowid) FROM entries WHERE epub is NULL')
+    row = c.fetchone()
+    total = row[0]  # total number of entries that match
+    log.info('%d entries to scrape and save', total)
+    # Potentially log progress
+
+    counter = 0
+    converted_counter = 0
+    c.execute('select rowid, url from entries where epub is NULL')
+    row = c.fetchone()
+    while row:
+        rowid, url = row
+        log.info('%d of %d %d %r', counter, total, rowid, url)
+        try:
+            scrape_and_save_one(c_update, rowid, url)
+            converted_counter += 1
+        except:
+            log.error('Error scrape_and_save_one', exc_info=1)  # include traceback
+        counter += 1
+        row = c.fetchone()
+    log.info('%d entries converted out of %d', converted_counter, total)
+
+    c.close()
+    c_update.close()
+    url_db.commit()
+    url_db._disconnect(commit=True)
+
 
 def main(argv=None):
     if argv is None:
@@ -64,6 +134,7 @@ def main(argv=None):
     TODO Allow to be stored in database and seperate worker to perform scrape/epub-conversion?
     whatbagacack should then exclude epub IS NULL and wallabag_entry IS NULL rows
     """
+    # FIXME use UrlDb()
     c.execute('''
     CREATE TABLE IF NOT EXISTS entries (
         rowid INTEGER PRIMARY KEY ASC,
