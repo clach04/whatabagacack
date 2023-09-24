@@ -245,17 +245,17 @@ def wallabag_rest_api_wsgi(environ, start_response):
             return debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)
         # TODO remove "if path_info and " checks below, no longer needed
 
-        if path_info and path_info.startswith('/api/info'):
+        if path_info.startswith('/api/info'):
             wallabag_version_dict = {
                 "appname": "wallabag",
                 "version": WALLABAG_VERSION_STR,
                 "allowed_registration": False
             }
             fake_info_str = json.dumps(wallabag_version_dict)
-        elif path_info and path_info == '/api/version':  # NOTE this is deprecated BUT KoReader Wallabag plugin uses this
+        elif path_info == '/api/version':  # NOTE this is deprecated BUT KoReader Wallabag plugin uses this
             fake_info_str = '"%s"' % WALLABAG_VERSION_STR
-        #elif path_info and path_info.startswith('/api/entries'):
-        elif path_info and (path_info == '/api/entries' or path_info == '/api/entries.json'):  # NOTE .json is not documented (maybe old v1 API) and is used by KoReader
+        #elif path_info.startswith('/api/entries'):
+        elif (path_info == '/api/entries' or path_info == '/api/entries.json'):  # NOTE .json is not documented (maybe old v1 API) and is used by KoReader
             #import pdb ; pdb.set_trace()  # DEBUG
             #return debug_dumper(environ, start_response, request_body=None, get_dict=get_dict)  # DEBUG
             # only intend to support wallabag-client python app from pypi and KoReader
@@ -342,7 +342,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
 
             #print(json.dumps(wallabag_articles, indent=4))  # DEBUG
             fake_info_str = json.dumps(wallabag_articles)
-        elif path_info and path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
+        elif path_info.startswith('/api/entries') and path_info.endswith('/export.epub'):
             # epub download
             # Assume have string like /api/entries/X/export.epub - where X is integer, perform little to no/zero santity/validity checks
             entry_number = path_info.split('/')[3]  # again, no error checking, don't even check if it is an integer
