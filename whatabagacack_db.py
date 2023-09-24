@@ -11,6 +11,8 @@ log.setLevel(level=logging.DEBUG)
 
 
 class UrlDb:
+    def __del__(self):
+        self._disconnect()
     def __init__(self, database_name, autocommit=True, autoconnect=False):
         """autocommit is really  pseudo autocommit, and handled in the application NOT the database (driver)
         autoconnect - if true, connect and disconnect for each operation
@@ -18,6 +20,7 @@ class UrlDb:
         self.database_name = database_name
         self._db = None
         self.autocommit = autocommit or False  # implemented in this class, not using/relying on database autocommit
+        self.autoconnect = autoconnect or False
 
     def _disconnect(self, commit=False):
         """Ignores autocommit, assumes autocommit was issued previously
@@ -26,7 +29,8 @@ class UrlDb:
         if db:
             if commit:
                 db.commit()
-            # autorollback
+            else:
+                db.rollback()  # explictly, not really needed but here as just-in-case
             db.close()
 
     def _connect(self):
