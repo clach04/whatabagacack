@@ -38,7 +38,7 @@ class UrlDb:
 
             epub TEXT NULLABLE,  /* if NULL, not scraped? consider making UNIQUE It should be unique, but does this need to be enforced in the database (with index overhead)? */
             wallabag_entry TEXT  /* if NULL, not scraped? */
-            )
+        )
         ''')
         if self.autocommit:
             db.commit()
