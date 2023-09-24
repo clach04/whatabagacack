@@ -11,8 +11,9 @@ log.setLevel(level=logging.DEBUG)
 
 
 class UrlDb:
-    def __init__(self, database_name, autocommit=True):
+    def __init__(self, database_name, autocommit=True, autoconnect=False):
         """autocommit is really  pseudo autocommit, and handled in the application NOT the database (driver)
+        autoconnect - if true, connect and disconnect for each operation
         """
         self.database_name = database_name
         self._db = None
@@ -45,10 +46,31 @@ class UrlDb:
         if self.autocommit:
             db.commit()
 
+    def auto_connect(self):
+        if self.autoconnect and self._db is None:
+            self._disconnect()
+
+    def auto_disconnect(self):
+        if self.autoconnect and self._db:
+            self._connect()
+
+    def commit(self):
+        if self._db:
+            db.commit()
+        else:
+            raise NotImplmentedError('no database connection')
+
+    def rollback(self):
+        if self._db:
+            db.rollback()
+        else:
+            raise NotImplmentedError('no database connection')
+
     def url_add(self, url):
         """Add to url into database
         Returns unique id (integer, basically sqlite3 rowid)
         """
+        self.auto_connect()
         db = self._db
         c = db.cursor()
         result = None
@@ -60,6 +82,7 @@ class UrlDb:
             result = c.lastrowid
         if self.autocommit:
             db.commit()
+        self.auto_disconnect()
         return result
 
     def url_check(self, url, autocommit=None):
@@ -67,6 +90,7 @@ class UrlDb:
         """
         if autocommit is None:
             autocommit = self.autocommit
+        self.auto_connect()
         db = self._db
         c = db.cursor()
         bind_params = (url,)
@@ -74,6 +98,7 @@ class UrlDb:
         rows = c.fetchall()
         if autocommit:
             db.commit()
+        self.auto_disconnect()
         if rows:
             return True
         else:
