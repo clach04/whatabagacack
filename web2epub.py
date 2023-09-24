@@ -31,7 +31,7 @@ logging.basicConfig()
 log.setLevel(level=logging.DEBUG)
 
 
-def scrape_and_save_one(c, rowid, url):
+def scrape_and_save_one(c, rowid, url, extractor_function = w2d.get_extractor_function()):
     """TODO doc environment variables that cause side effects
         cache dir ? W2D_CACHE_DIR, currently handled by caller, e.g. scrape_and_save()
         output dir - current directory, also handled by caller
@@ -39,8 +39,7 @@ def scrape_and_save_one(c, rowid, url):
     output_format = w2d.FORMAT_HTML
     output_format = w2d.FORMAT_EPUB
 
-    extractor_function = w2d.extractor_raw
-
+    # The advantage of w2d.dump_url() is that OS environment W2D_EXTRACTOR can be used to pick extractor, process_page() uses what ever it's told to
     #epub_output_function = w2d.pandoc_epub_output_function
     #result_metadata = w2d.process_page(url, output_format=output_format, extractor_function=extractor_function, filename_prefix='%d_' % rowid, epub_output_function=epub_output_function)
     result_metadata = w2d.process_page(url, output_format=output_format, extractor_function=extractor_function, filename_prefix='%d_' % rowid)
@@ -64,6 +63,10 @@ def scrape_and_save_one(c, rowid, url):
     c.execute('UPDATE entries SET epub = ?, wallabag_entry = ? WHERE rowid = ?', bind_params)
 
 def scrape_and_save(database_details):
+    #extractor_function = w2d.extractor_raw
+    extractor_function = w2d.get_extractor_function()
+    log.info('extractor_function=%r control via W2D_EXTRACTOR', extractor_function)
+
     w2d.safe_mkdir(w2d.cache_dir)  # i.e. W2D_CACHE_DIR - TODO this could be better
     url_db = whatabagacack_db.UrlDb(database_details)
 
@@ -85,7 +88,7 @@ def scrape_and_save(database_details):
         rowid, url = row
         log.info('%d of %d %d %r', counter, total, rowid, url)
         try:
-            scrape_and_save_one(c_update, rowid, url)
+            scrape_and_save_one(c_update, rowid, url, extractor_function=extractor_function)
             converted_counter += 1
         except:
             log.error('Error scrape_and_save_one', exc_info=1)  # include traceback
