@@ -50,7 +50,7 @@ http://localhost:8000/one.html
 http://localhost:8000/two.html
 http://localhost:8000/sub_dir/three.html
 """
-    archive_dir = os.environ.get('ARCHIVE_DIR', 'test_archive_dir')
+    archive_dir = os.environ.get('ARCHIVE_DIR', 'test_archive_dir')  # TODO Also see WEB_EPUB_DIRECTORY
     database_details = os.environ.get('ARCHIVE_DB', 'test_db.sqlite3')  # relative to ARCHIVE_DIR
     orig_cwd = os.path.abspath(os.path.normpath(os.getcwd()))
 
