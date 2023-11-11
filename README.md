@@ -3,9 +3,7 @@
 Home page https://github.com/clach04/whatabagacack
 
 If you stumbled on this project in relation to Wallabag, don't use this!
-Use Wallabag instead. Or perhaps:
-
-  * https://github.com/LordEidi/wombag - Written in Go
+Use Wallabag instead. See alternatives section.
 
 Experimental (incomplete) Wallabag API Server that runs under Python 3 and 2.
 Runs under Microsoft Windows and Linux (expected to run under Mac, but untested).
@@ -153,4 +151,6 @@ Example:
 ## Alternatives
 
   * Wallabag either self hosted or subscription service - great team, this is the least effort option available and very reasonably priced. The Android app is very decent.
+  * https://github.com/LordEidi/wombag - Written in Go, also offers Wallabag API
+  * https://github.com/go-shiori/shiori excellent scraping and readability support with full archive as well
   * https://github.com/omnivore-app/omnivore (as of 2023, not possible to self host due to GCO requirements). Has an android app.
