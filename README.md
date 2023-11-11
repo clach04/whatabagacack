@@ -149,3 +149,8 @@ Example:
 
     python web2epub.py https://en.wikipedia.org/wiki/EPUB
     # NOTE requires manually copy/pasting json into entries.json (or some other name)
+
+## Alternatives
+
+  * Wallabag either self hosted or subscription service - great team, this is the least effort option available and very reasonably priced. The Android app is very decent.
+  * https://github.com/omnivore-app/omnivore (as of 2023, not possible to self host due to GCO requirements). Has an android app.
