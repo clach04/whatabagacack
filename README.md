@@ -49,7 +49,7 @@ Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/d
       * [Browser extensions/plugin/addons](https://github.com/wallabag/wallabagger)
           * https://addons.mozilla.org/firefox/addon/wallabagger/
           * https://chrome.google.com/webstore/detail/wallabagger/gbmgphmejlcoihgedabhgjdkcahacjlj
-      * [Bookmarklet extension](https://addons.mozilla.org/en-US/firefox/addon/wallabaggerini/) https://github.com/Johennes/wallabaggerini
+      * [Bookmarklet extension](https://addons.mozilla.org/en-US/firefox/addon/wallabaggerini/) https://github.com/Johennes/wallabaggerini - https://github.com/clach04/whatabagacack/issues/16
 
 ## Status
 
