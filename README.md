@@ -156,3 +156,4 @@ Example:
   * https://github.com/go-shiori/shiori excellent scraping and readability support with full archive as well
   * https://github.com/omnivore-app/omnivore (as of 2023, not possible to self host due to GCO requirements). Has an android app.
   * https://codeberg.org/readeck/readeck which has a neat web browser extension which can use the browser to scrape instead of the server
+  * https://github.com/OpenArchive
