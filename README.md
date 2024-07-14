@@ -8,15 +8,18 @@ Use Wallabag instead. See alternatives section.
 Experimental (incomplete) Wallabag API Server that runs under Python 3 and 2.
 Runs under Microsoft Windows and Linux (expected to run under Mac, but untested).
 
-- [❓👜💩❗ What A Bag A Cack](#-what-a-bag-a-cack)
   * [Overview](#overview)
   * [Status](#status)
   * [resources](#resources)
     + [Test / Sample URLs](#test---sample-urls)
   * [What is this good for?](#what-is-this-good-for-)
   * [Usage](#usage)
+    + [Quick Start Server](#quick-start-server)
     + [Usage Server](#usage-server)
     + [Usage Dumb Scraper](#usage-dumb-scraper)
+  * [Alternatives](#alternatives)
+    + [Content Saving](#content-saving)
+    + [URL / Bookmarking](#url---bookmarking)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -151,6 +154,8 @@ Example:
 
 ## Alternatives
 
+### Content Saving
+
   * Wallabag either self hosted or subscription service - great team, this is the least effort option available and very reasonably priced. The Android app is very decent.
   * https://github.com/LordEidi/wombag - Written in Go, also offers Wallabag API
   * https://github.com/go-shiori/shiori excellent scraping and readability support with full archive as well
@@ -159,3 +164,10 @@ Example:
   * https://github.com/omnivore-app/omnivore (as of 2023, not possible to self host due to GCO requirements). Has an android app.
   * https://codeberg.org/readeck/readeck which has a neat web browser extension which can use the browser to scrape instead of the server
   * https://github.com/OpenArchive
+
+### URL / Bookmarking
+
+  * https://github.com/arunk140/portall - Python Django (untest)
+  * [LinkDing](https://github.com/sissbruecker/linkding) - Python Django
+  * [Sharli](https://github.com/shaarli/Shaarli) - PHP, annoying storage (serializes entire list on each save)
+  * https://github.com/Kovah/LinkAce - PHP (untested)
