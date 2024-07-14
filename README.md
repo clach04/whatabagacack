@@ -162,8 +162,13 @@ Example:
   * https://codeberg.org/readeck/readeck
   * https://github.com/dullage/url2kindle
   * https://github.com/omnivore-app/omnivore (as of 2023, not possible to self host due to GCO requirements). Has an android app.
-  * https://codeberg.org/readeck/readeck which has a neat web browser extension which can use the browser to scrape instead of the server
+  * https://codeberg.org/readeck/readeck - Go which has a neat web browser extension which can use the browser to scrape (then upload) instead of the server. Supports multiple articles/collections in a single epub. Also includes an OPDS server
   * https://github.com/OpenArchive
+  * https://github.com/ArchiveBox/ArchiveBox - Python
+      * https://github.com/ArchiveBox/archivebox-proxy - MITM proxy to record browsing sessions
+      * https://github.com/ArchiveBox/archivebox-spreadsheet-bot - feed URLs from a Spreadsheet/Google-Sheet
+      * https://github.com/ArchiveBox/readability-extractor - command lin node tool
+  * https://github.com/linkwarden/linkwarden - TypeScript
 
 ### URL / Bookmarking
 
@@ -171,3 +176,8 @@ Example:
   * [LinkDing](https://github.com/sissbruecker/linkding) - Python Django
   * [Sharli](https://github.com/shaarli/Shaarli) - PHP, annoying storage (serializes entire list on each save)
   * https://github.com/Kovah/LinkAce - PHP (untested)
+
+
+### Client Tools and Browser Extensions
+
+  * https://github.com/ArchiveBox/archivebox-browser-extension
