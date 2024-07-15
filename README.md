@@ -181,4 +181,5 @@ Example:
 ### Client Tools and Browser Extensions
 
   * https://github.com/artur-shaik/wallabag-client - see whatabagacack features
+  https://github.com/casimir/frigoligo - wallabag (android)
   * https://github.com/ArchiveBox/archivebox-browser-extension
