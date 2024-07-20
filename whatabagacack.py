@@ -291,7 +291,7 @@ def wallabag_rest_api_wsgi(environ, start_response):
             """
             # NOTE bare minimum so wallabag-client from pypi will run with "list"
             # TODO 1 - use dict and dump to json (rather than raw string as it is now)
-            # TODO 2 - pages of results
+            # TODO 2 - pages of results - FIXME consider using https://github.com/Pylons/paginate
             """args to handle:
                 'archive':
                 'detail': 'metadata' / 'full' - likely never support full?
