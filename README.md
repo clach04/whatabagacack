@@ -8,6 +8,8 @@ Use Wallabag instead. See alternatives section.
 Experimental (incomplete) Wallabag API Server that runs under Python 3 and 2.
 Runs under Microsoft Windows and Linux (expected to run under Mac, but untested).
 
+Uses https://github.com/clach04/w2d for epub generation
+
   * [Overview](#overview)
   * [Status](#status)
   * [resources](#resources)
