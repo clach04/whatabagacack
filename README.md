@@ -161,6 +161,7 @@ Example:
 
   * Wallabag either self hosted or subscription service - great team, this is the least effort option available and very reasonably priced. The Android app is very decent.
   * https://github.com/LordEidi/wombag - Written in Go, also offers Wallabag API
+  * https://sr.ht/~sbinet/sako/ - Written in Go, also offers Wallabag API (unclear on features)
   * https://github.com/go-shiori/shiori excellent scraping and readability support with full archive as well
   * https://codeberg.org/readeck/readeck
   * https://github.com/dullage/url2kindle
