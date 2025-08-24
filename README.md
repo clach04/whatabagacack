@@ -188,3 +188,4 @@ Example:
   * https://github.com/artur-shaik/wallabag-client - see whatabagacack features
   https://github.com/casimir/frigoligo - wallabag (android)
   * https://github.com/ArchiveBox/archivebox-browser-extension
+  * https://github.com/david-jointech/Bookmarksync - tool for syncing Wallabag to Shaarli.
