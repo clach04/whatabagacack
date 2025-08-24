@@ -74,6 +74,8 @@ Aim to support a subset of the [Wallabag REST API](https://app.wallabag.it/api/d
 
 ### Test / Sample URLs
 
+see https://github.com/clach04/test-archive-urls/issues
+
     https://en.wikipedia.org/wiki/EPUB
     https://en.wikipedia.org/wiki/Fb2
     https://en.wikipedia.org/wiki/FBReader
